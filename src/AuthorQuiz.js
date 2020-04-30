@@ -1,5 +1,6 @@
 import React,{ Component } from 'react';
 import {Link} from 'react-router-dom';
+import {connect} from 'react-redux';
 //import PropTypes from 'prop-types';
 import logo from './logo.svg';
 import './App.css';
@@ -81,8 +82,24 @@ function Continue ({show,onContinue}){
          </div>
      ) 
  }
+function mapStateProps(state){
+    return{
+            turnData:state.turnData,
+            highlight: state.highlight
+    };
+}
 
-const AuthorQuiz=({turnData,highlight,onAnswerSelected,onContinue})=>{
+function mapDispatchToProps(dispatch){
+    return{
+    onAnswerSelected: (answer) => {
+        dispatch({type:'ANSWER_SELECTED',answer})
+    },
+    onContinue: ()=>{
+        dispatch({type:'CONTINUE'})
+    }
+ };
+}
+const AuthorQuiz= connect(mapStateProps,mapDispatchToProps)(function ({turnData,highlight,onAnswerSelected,onContinue}){
     
         return (
             <div className="container-fluid">
@@ -96,5 +113,5 @@ const AuthorQuiz=({turnData,highlight,onAnswerSelected,onContinue})=>{
 
         );
 
-}
+});
 export default AuthorQuiz;
